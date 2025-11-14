@@ -1,0 +1,461 @@
+.cards {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.container {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+}
+.cards div img {
+    width: 200px;
+    height: 150px;
+}
+.active {
+    display: none;
+}
+form {
+    border: 2px solid black;
+    background-color: white;
+    border-radius: 10px;
+    width: 300px;
+    height: 200px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    padding: 20px 0;
+    position: absolute;    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+form input {
+    width: 60%;
+    height: 20px;
+    margin-bottom: 20px;
+}
+input:focus {
+    outline: none;
+}
+form button {
+    width: 100px;
+    height: 20px;
+    background-color: #008000;
+}
+.flexbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header img { 
+    width: 150px;
+}
+header a {
+    font-size: 22px;
+    font-weight: 600;
+    margin-left: 15px;
+    color: black;
+    text-decoration: none;
+}
+header a:hover {
+    color: #008000;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.card {
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    transition: 0.3s ease-in-out;
+    text-align: center;
+    padding: 10px 0;
+}
+.card:hover {
+    transform: scale(1.05);
+}
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+footer {
+    display: flex;
+}
+
+.food-card {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    box-shadow: 
+        0 10px 30px rgba(0,0,0,0.1),
+        0 4px 6px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.15),
+        0 8px 12px rgba(0,0,0,0.1);
+}
+
+/* Стили для галереи */
+.food-gallery {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.gallery-item {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.food-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover .food-image {
+    transform: scale(1.05);
+}
+
+/* Стили для контента */
+.food-content {
+    padding: 2.5rem;
+    background: white;
+}
+
+.food-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.food-description {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #5a6c7d;
+    margin-bottom: 2rem;
+    border-left: 4px solid #e74c3c;
+    padding-left: 1.5rem;
+}
+/* Стили для кнопок сортировки */
+.sort-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.sort-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Сетка карточек */
+.foods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+/* Карточка еды */
+.food-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255,255,255,0.2);
+    position: relative;
+}
+
+.food-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* Галерея изображений */
+.food-card__gallery {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+}
+
+.food-card__image-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.food-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.food-card:hover .food-card__image {
+    transform: scale(1.1);
+}
+
+/* Контент карточки */
+.food-card__content {
+    padding: 1.5rem;
+}
+
+.food-card__name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.food-card__description {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Футер карточки */
+.food-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.food-card__price {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #e74c3c;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.food-card__btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.food-card__btn:hover {
+    transform: translateX(4px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.food-card {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .foods-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .food-card__gallery {
+        height: 200px;
+    }
+    
+    .food-card__content {
+        padding: 1.25rem;
+    }
+    
+    .food-card__name {
+        font-size: 1.3rem;
+    }
+    
+    .food-card__footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .food-card__btn {
+        justify-content: center;
+    }
+    
+    .sort-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Декоративные элементы */
+.food-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #e74c3c 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.food-card:hover::before {
+    opacity: 1;
+}
+
+.food-price-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.food-price {
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e74c3c;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    border: 2px solid rgba(231, 76, 60, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.food-price::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.food-price:hover::before {
+    left: 100%;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .food-card {
+        margin: 1rem;
+        border-radius: 15px;
+    }
+    
+    .food-gallery {
+        height: 300px;
+    }
+    
+    .food-content {
+        padding: 1.5rem;
+    }
+    
+    .food-name {
+        font-size: 2rem;
+    }
+    
+    .food-price {
+        font-size: 1.5rem;
+    }
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.food-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Дополнительные декоративные элементы */
+.food-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    width: 90%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #bdc3c7, transparent);
+}

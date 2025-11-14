@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="food-card">
+    <!-- Слайдер изображений -->
+    <div class="food-gallery">
+        {% for img in food.image_set.all %}
+            <div class="gallery-item">
+                <img class="food-image" src="{{ img.image.url }}" alt="{{ img.name }}">
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Контент блюда -->
+    <div class="food-content">
+        <h2 class="food-name">{{ food.name }}</h2>
+        <p class="food-description">{{ food.description }}</p>
+        <div class="food-price-container">
+            <span class="food-price">{{ food.price }} ₽</span>
+        </div>
+    </div>
+</div>
+{% endblock  %}
