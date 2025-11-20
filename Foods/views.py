@@ -2,7 +2,11 @@ from django.shortcuts import render,redirect
 from django.urls import path
 from .models import Food, Image
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 def index(request):
     foods = Food.objects.all()
@@ -36,12 +40,65 @@ def about (request):
     return render(request, 'about.html')
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            messages.success(request, f'Аккаунт успешно создан для {user.username}!')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
     else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html')
+        form = CustomUserCreationForm()
+    
+    return render(request, 'accounts/register.html', {'form': form})
+
+def custom_login(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'Добро пожаловать, {username}!')
+                next_url = request.GET.get('next', 'dashboard')
+                return redirect(next_url)
+        else:
+            messages.error(request, 'Неверное имя пользователя или пароль.')
+    else:
+        form = CustomAuthenticationForm()
+    
+    return render(request, 'accounts/login.html', {'form': form})
+
+@login_required
+def custom_logout(request):
+    logout(request)
+    messages.success(request, 'Вы успешно вышли из системы.')
+    return redirect('login')
+
+@login_required
+def dashboard(request):
+    return render(request, 'accounts/dashboard.html')
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Пароль успешно изменен!')
+            return redirect('profile')
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return render(request, 'accounts/profile.html', {'form': form})
