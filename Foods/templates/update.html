@@ -2,6 +2,8 @@
 {% block content %}
 <div class="food-card">
     <!-- Слайдер изображений -->
+   
+    
     <div class="food-gallery">
         {% for img in food.image_set.all %}
             <div class="gallery-item">
@@ -9,6 +11,8 @@
             </div>
         {% endfor %}
     </div>
+
+    
     
     <!-- Контент блюда -->
     <div class="food-content">
