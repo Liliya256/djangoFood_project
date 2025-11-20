@@ -588,3 +588,333 @@ about-section {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
 } */
+
+
+/* About Page Styles */
+.about-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+/* Герой секция */
+.about-hero {
+    background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.about-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.about-subtitle {
+    font-size: 1.5rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* Общие стили секций */
+.about-section {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    margin-bottom: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #1a202c;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #dc2626, #ea580c);
+    border-radius: 2px;
+}
+
+/* Сетка история */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-text h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    color: #1a202c;
+}
+
+.about-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4a5568;
+    margin-bottom: 1.5rem;
+}
+
+.about-image {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.about-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.about-image:hover img {
+    transform: scale(1.05);
+}
+
+/* Преимущества */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    text-align: center;
+    padding: 40px 30px;
+    border-radius: 15px;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    border-color: #dc2626;
+    box-shadow: 0 20px 40px rgba(220, 38, 38, 0.1);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #1a202c;
+}
+
+.feature-card p {
+    color: #718096;
+    line-height: 1.6;
+}
+
+/* Статистика */
+.stats-section {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    color: white;
+}
+
+.stats-section .section-title {
+    color: white;
+}
+
+.stats-section .section-title::after {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    text-align: center;
+}
+
+.stat-item {
+    padding: 20px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Команда */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+.team-member {
+    text-align: center;
+    padding: 30px;
+    border-radius: 15px;
+    background: #f8fafc;
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.member-photo {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.team-member h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #1a202c;
+}
+
+.team-member p {
+    color: #718096;
+    margin-bottom: 0.5rem;
+}
+
+.member-desc {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Контакты */
+.contact-section {
+    padding: 60px 50px;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+}
+
+.contact-info h2 {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: #1a202c;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    gap: 15px;
+}
+
+.contact-icon {
+    font-size: 1.5rem;
+    margin-top: 0.2rem;
+}
+
+.contact-item strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: #1a202c;
+}
+
+.contact-item p {
+    color: #718096;
+    margin: 0;
+}
+
+.map-placeholder {
+    background: #f8fafc;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    border: 2px dashed #cbd5e0;
+}
+
+.map-fallback {
+    text-align: center;
+    color: #718096;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .about-title {
+        font-size: 2.5rem;
+    }
+    
+    .about-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .about-section {
+        padding: 30px 20px;
+    }
+    
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero {
+        padding: 60px 0;
+    }
+    
+    .about-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -2,26 +2,37 @@
 {% block content %}
 <div class="food-card">
     <!-- Слайдер изображений -->
-   
-    
-    <div class="food-gallery">
-        {% for img in food.image_set.all %}
-            <div class="gallery-item">
-                <img class="food-image" src="{{ img.image.url }}" alt="{{ img.name }}">
-            </div>
-        {% endfor %}
+    <div class="food-gallery-slider">
+        <div class="slider-container">
+            {% for img in food.image_set.all %}
+                <div class="slide {% if forloop.first %}active{% endif %}">
+                    <img class="food-image" src="{{ img.image.url }}" alt="{{ img.name }}">
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Навигационные стрелки -->
+        {% if food.image_set.all.count > 1 %}
+        <button class="slider-btn prev-btn" onclick="changeSlide(-1)">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <button class="slider-btn next-btn" onclick="changeSlide(1)">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+        
+        <!-- Индикаторы -->
+        <div class="slider-indicators">
+            {% for img in food.image_set.all %}
+                <button class="indicator {% if forloop.first %}active{% endif %}" onclick="goToSlide({{ forloop.counter0 }})"></button>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 
-    
-
-
-
-        
- 
-    
-
-    
-    
     <!-- Контент блюда -->
     <div class="food-content">
         <h2 class="food-name">{{ food.name }}</h2>
@@ -31,4 +42,124 @@
         </div>
     </div>
 </div>
-{% endblock  %}
+
+<style>
+.food-gallery-slider {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.slider-container {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.slide {
+    min-width: 100%;
+    display: none;
+}
+
+.slide.active {
+    display: block;
+}
+
+.food-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.slider-btn:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+.slider-indicators {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.indicator.active {
+    background: rgba(255, 255, 255, 1);
+}
+</style>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const indicators = document.querySelectorAll('.indicator');
+const totalSlides = slides.length;
+
+function showSlide(index) {
+    // Скрываем все слайды
+    slides.forEach(slide => slide.classList.remove('active'));
+    indicators.forEach(indicator => indicator.classList.remove('active'));
+    
+    // Корректируем индекс для циклической навигации
+    if (index >= totalSlides) {
+        currentSlide = 0;
+    } else if (index < 0) {
+        currentSlide = totalSlides - 1;
+    } else {
+        currentSlide = index;
+    }
+    
+    // Показываем текущий слайд
+    slides[currentSlide].classList.add('active');
+    indicators[currentSlide].classList.add('active');
+}
+
+function changeSlide(direction) {
+    showSlide(currentSlide + direction);
+}
+
+function goToSlide(index) {
+    showSlide(index);
+}
+
+// Автопрокрутка (опционально)
+// setInterval(() => {
+//     changeSlide(1);
+// }, 5000);
+</script>
+{% endblock %}

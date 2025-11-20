@@ -21,6 +21,12 @@ def catalog(request):
     catalog = Food.objects.all()
     return render(request, 'catalog.html', {'catalog':catalog})
 
+# def catalog(request):
+#     context={
+#         'title': "Каталог"
+#         }
+#     return render(request, 'catalog.html', context)
+
 def create(request):
     if request.method == 'POST':
         name = request.POST['name']
@@ -33,14 +39,18 @@ def create(request):
         return render(request, 'create.html')
 
 def contact (request):
-    return render(request, 'contact.html')
+    context={
+        'title': "Контакты"}
+    return render(request, 'contact.html', context)
 
 def update(request, id):
     food = Food.objects.get(id=id)
     return render(request, 'update.html', {'food': food})
 
 def about (request):
-    return render(request, 'about.html')
+    context={
+        'title': "О нас"}
+    return render(request, 'about.html', context)
 
 def register(request):
     if request.user.is_authenticated:
