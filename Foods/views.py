@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django.urls import path
 from .models import Food, Image
 from django.contrib.auth.forms import UserCreationForm
@@ -7,6 +7,9 @@ from django.contrib.auth import login, logout, authenticate, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
+
+
+
 
 def index(request):
     foods = Food.objects.all()
