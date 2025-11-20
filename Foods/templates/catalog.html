@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-   
-
-    <h1>Каталог товаров</h1>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Каталог товаров</h1>
     
-<section class="container mx-auto px-4 py-8">
-    <!-- Сортировка -->
-    
-
     <!-- Карточки еды -->
     <div class="foods-grid">
         {% for i in catalog %}
@@ -16,16 +11,29 @@
             <!-- Изображения -->
             <div class="food-card__gallery">
                 {% for img in i.image_set.all %}
-                <div class="food-card__image-wrapper">
-                    <img class="food-card__image" src="{{ img.image.url }}" alt="{{ img.name }}">
-                </div>
+                    {% if forloop.first %}  {# Показываем только первое изображение #}
+                    <div class="food-card__image-wrapper">
+                        <div class="image-container">
+                            <img class="food-card__image" src="{{ img.image.url }}" alt="{{ img.name }}" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                    {% endif %}
+                {% empty %}
+                    {# Заглушка если нет изображений #}
+                    <div class="food-card__image-wrapper">
+                        <div class="image-container">
+                            <div class="no-image-placeholder">
+                                <span>Нет изображения</span>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
 
             <!-- Контент -->
             <div class="food-card__content">
                 <h3 class="food-card__name">{{ i.name }}</h3>
-                <p class="food-card__description">{{ i.description }}</p>
+                <p class="food-card__description">{{ i.description|truncatewords:20 }}</p>
                 <div class="food-card__footer">
                     <span class="food-card__price">{{ i.price }} ₽</span>
                     <a href="{% url 'update' i.id %}" class="food-card__btn">
@@ -39,6 +47,243 @@
         </div>
         {% endfor %}
     </div>
-</section>
+</div>
 
+<style>
+/* Сетка карточек */
+.foods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* Карточка товара */
+.food-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.food-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Галерея изображений */
+.food-card__gallery {
+    position: relative;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.food-card__image-wrapper {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.image-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.food-card__image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.food-card:hover .food-card__image {
+    transform: scale(1.05);
+}
+
+/* Заглушка для отсутствующих изображений */
+.no-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    border-radius: 8px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Контент карточки */
+.food-card__content {
+    padding: 20px;
+}
+
+.food-card__name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.food-card__description {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Футер карточки */
+.food-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.food-card__price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #059669;
+}
+
+.food-card__btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #dc2626;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.food-card__btn:hover {
+    background: #b91c1c;
+    transform: translateX(4px);
+}
+
+.food-card__btn svg {
+    transition: transform 0.3s ease;
+}
+
+.food-card__btn:hover svg {
+    transform: translateX(2px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .foods-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .food-card__image-wrapper {
+        height: 200px;
+        padding: 12px;
+    }
+    
+    .food-card__content {
+        padding: 16px;
+    }
+    
+    .food-card__name {
+        font-size: 16px;
+    }
+    
+    .food-card__price {
+        font-size: 18px;
+    }
+    
+    .food-card__btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .foods-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .food-card__image-wrapper {
+        height: 180px;
+    }
+    
+    h1 {
+        font-size: 24px;
+        text-align: center;
+    }
+}
+
+/* Скелетон-загрузка (опционально) */
+.food-card.skeleton .food-card__image-wrapper {
+    background: #e5e7eb;
+    animation: pulse 2s infinite;
+}
+
+.food-card.skeleton .food-card__name,
+.food-card.skeleton .food-card__description,
+.food-card.skeleton .food-card__price {
+    background: #e5e7eb;
+    color: transparent;
+    border-radius: 4px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+</style>
+
+<script>
+// Обработка ошибок загрузки изображений
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.food-card__image');
+    
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            this.style.display = 'none';
+            const wrapper = this.closest('.image-container');
+            if (wrapper) {
+                wrapper.innerHTML = `
+                    <div class="no-image-placeholder">
+                        <span>Изображение не загружено</span>
+                    </div>
+                `;
+            }
+        });
+    });
+});
+</script>
 {% endblock content %}
