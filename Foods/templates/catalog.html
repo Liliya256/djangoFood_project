@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-   
-
-    <h1>Каталог товаров</h1>
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Каталог товаров</h1>
     
-<section class="container mx-auto px-4 py-8">
-    <!-- Сортировка -->
-    
-
     <!-- Карточки еды -->
     <div class="foods-grid">
         {% for i in catalog %}
@@ -16,21 +11,34 @@
             <!-- Изображения -->
             <div class="food-card__gallery">
                 {% for img in i.image_set.all %}
-                <div class="food-card__image-wrapper">
-                    <img class="food-card__image" src="{{ img.image.url }}" alt="{{ img.name }}">
-                </div>
+                    {% if forloop.first %}  {# Показываем только первое изображение #}
+                    <div class="food-card__image-wrapper">
+                        <div class="image-container">
+                            <img class="food-card__image" src="{{ img.image.url }}" alt="{{ img.name }}" onerror="this.style.display='none'">
+                        </div>
+                    </div>
+                    {% endif %}
+                {% empty %}
+                    {# Заглушка если нет изображений #}
+                    <div class="food-card__image-wrapper">
+                        <div class="image-container">
+                            <div class="no-image-placeholder">
+                                <span>Нет изображения</span>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
 
             <!-- Контент -->
             <div class="food-card__content">
                 <h3 class="food-card__name">{{ i.name }}</h3>
-                <p class="food-card__description">{{ i.description }}</p>
+                <p class="food-card__description">{{ i.description|truncatewords:20 }}</p>
                 <div class="food-card__footer">
                     <span class="food-card__price">{{ i.price }} ₽</span>
                     <a href="{% url 'update' i.id %}" class="food-card__btn">
                         Подробнее
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
@@ -39,6 +47,386 @@
         </div>
         {% endfor %}
     </div>
-</section>
+</div>
 
+<style>
+/* Сетка карточек с фиксированной шириной */
+.foods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+    align-items: stretch;
+}
+
+/* Карточка товара */
+.food-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 400px;
+}
+
+.food-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Галерея изображений - фиксированная высота */
+.food-card__gallery {
+    position: relative;
+    background: #f8f9fa;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.food-card__image-wrapper {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.image-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.food-card__image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.food-card:hover .food-card__image {
+    transform: scale(1.05);
+}
+
+/* Заглушка для отсутствующих изображений */
+.no-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    border-radius: 8px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Контент карточки - растягивается */
+.food-card__content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+/* Название товара по центру */
+.food-card__name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.8em;
+    text-align: center; /* Выравнивание по центру */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+.food-card__description {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+    min-height: 4.5em;
+    text-align: center; /* Описание тоже по центру */
+}
+
+/* Футер карточки - фиксирован внизу */
+.food-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.food-card__price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #059669;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Уменьшенная кнопка "Подробнее" */
+.food-card__btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #dc2626;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: auto;
+    width: auto;
+}
+
+.food-card__btn:hover {
+    background: #b91c1c;
+    transform: translateX(2px);
+}
+
+.btn-icon {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.food-card__btn:hover .btn-icon {
+    transform: translateX(1px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .foods-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .food-card {
+        min-height: 380px;
+    }
+    
+    .food-card__image-wrapper {
+        height: 200px;
+        padding: 12px;
+    }
+    
+    .food-card__content {
+        padding: 16px;
+    }
+    
+    .food-card__name {
+        font-size: 16px;
+        min-height: 2.6em;
+        padding: 0 8px;
+    }
+    
+    .food-card__price {
+        font-size: 18px;
+    }
+    
+    .food-card__btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .food-card__description {
+        min-height: 4.2em;
+        font-size: 13px;
+    }
+    
+    .btn-icon {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .foods-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .food-card {
+        min-height: 360px;
+    }
+    
+    .food-card__image-wrapper {
+        height: 180px;
+    }
+    
+    h1 {
+        font-size: 24px;
+        text-align: center;
+    }
+    
+    .food-card__footer {
+        gap: 8px;
+    }
+    
+    .food-card__name {
+        font-size: 15px;
+        padding: 0 5px;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 360px) {
+    .foods-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .food-card {
+        min-height: 340px;
+    }
+    
+    .food-card__image-wrapper {
+        height: 160px;
+    }
+    
+    .food-card__btn {
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+    
+    .food-card__name {
+        font-size: 14px;
+    }
+}
+
+/* Скелетон-загрузка (опционально) */
+.food-card.skeleton .food-card__image-wrapper {
+    background: #e5e7eb;
+    animation: pulse 2s infinite;
+}
+
+.food-card.skeleton .food-card__name,
+.food-card.skeleton .food-card__description,
+.food-card.skeleton .food-card__price {
+    background: #e5e7eb;
+    color: transparent;
+    border-radius: 4px;
+    animation: pulse 2s infinite;
+}
+
+.food-card.skeleton .food-card__name {
+    height: 2.8em;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.food-card.skeleton .food-card__description {
+    height: 4.5em;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Гарантия одинаковой ширины */
+.food-card {
+    width: 100%;
+}
+
+/* Дополнительные стили для консистентности */
+.food-card__content > * {
+    margin-bottom: 12px;
+}
+
+.food-card__content > *:last-child {
+    margin-bottom: 0;
+}
+</style>
+
+<script>
+// Обработка ошибок загрузки изображений
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.food-card__image');
+    
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            this.style.display = 'none';
+            const wrapper = this.closest('.image-container');
+            if (wrapper) {
+                wrapper.innerHTML = `
+                    <div class="no-image-placeholder">
+                        <span>Изображение не загружено</span>
+                    </div>
+                `;
+            }
+        });
+    });
+
+    // Выравнивание высоты карточек
+    function alignCardHeights() {
+        const cards = document.querySelectorAll('.food-card');
+        let maxHeight = 0;
+        
+        cards.forEach(card => {
+            card.style.height = 'auto';
+        });
+        
+        cards.forEach(card => {
+            const height = card.offsetHeight;
+            if (height > maxHeight) {
+                maxHeight = height;
+            }
+        });
+        
+        cards.forEach(card => {
+            card.style.height = maxHeight + 'px';
+        });
+    }
+
+    window.addEventListener('load', alignCardHeights);
+    window.addEventListener('resize', alignCardHeights);
+});
+</script>
 {% endblock content %}

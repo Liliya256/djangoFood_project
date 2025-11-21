@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}title{% endblock %}</title>
+    <title>{{title}}</title>
 </head>
 <body>
     <header class="container flexbox">
@@ -16,9 +16,9 @@
             <img src="data:image/png;base64,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" alt=""></a>
         </div>
         <div class="menu">
+            <a href="{% url 'catalog' %}">Каталог</a>
             <a href="{% url 'about' %}">О нас</a>
             <a href="{% url 'contact' %}">Контакты</a>
-            <a href="{% url 'catalog' %}">Каталог</a>
         </div>
         
         <div class="auth">
@@ -28,6 +28,26 @@
             <a href= "{% url 'register' %}">Регистрация</a>
             <a href="{% url 'login' %}">Авторизация</a>
             {% endif %}
+<<<<<<< HEAD
+=======
+            {% if user.is_authenticated %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="{% url 'dashboard' %}">🔐 AuthSystem</a>
+            </div>
+            <div class="nav-menu">
+                <a href="{% url 'dashboard' %}" class="nav-link">Главная</a>
+                <a href="{% url 'profile' %}" class="nav-link">Профиль</a>
+                <form method="post" action="{% url 'logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link logout-btn">Выйти</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+>>>>>>> 615154170e087cc1bffa51fbfedd30a0d602630b
             
         </div>
     </header>
@@ -38,5 +58,6 @@
     </section>
     </main>
     <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'accounts/js/script.js' %}"></script>
 </body>
 </html>

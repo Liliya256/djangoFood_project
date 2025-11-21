@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Профиль - Auth System{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Профиль пользователя</h1>
+        <p>Управление вашими персональными данными</p>
+    </div>
+
+    <div class="profile-content">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <div class="avatar-placeholder">
+                        {{ user.username|first|upper }}
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <h2>{{ user.username }}</h2>
+                    <p class="profile-email">{{ user.email }}</p>
+                    <p class="profile-join-date">Зарегистрирован: {{ user.date_joined|date:"d.m.Y" }}</p>
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-group">
+                    <h3>Основная информация</h3>
+                    <div class="detail-item">
+                        <span class="detail-label">Имя пользователя:</span>
+                        <span class="detail-value">{{ user.username }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">{{ user.email|default:"Не указан" }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Последний вход:</span>
+                        <span class="detail-value">{{ user.last_login|date:"d.m.Y H:i"|default:"Еще не входил" }}</span>
+                    </div>
+                </div>
+
+                <div class="detail-group">
+                    <h3>Статистика</h3>
+                    <div class="detail-item">
+                        <span class="detail-label">Аккаунт создан:</span>
+                        <span class="detail-value">{{ user.date_joined|date:"d.m.Y" }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Статус:</span>
+                        <span class="detail-value status-active">Активен</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Администратор:</span>
+                        <span class="detail-value">
+                            {% if user.is_staff %}Да{% else %}Нет{% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="btn btn-primary">Редактировать профиль</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">На главную</a>
+            </div>
+        </div>
+
+        <div class="profile-sidebar">
+            <div class="sidebar-card">
+                <h3>Безопасность</h3>
+                <p>Последнее изменение пароля: Недавно</p>
+                <button class="btn btn-outline">Сменить пароль</button>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>Действия</h3>
+                <div class="action-links">
+                    <a href="#" class="action-link">📧 Настройки уведомлений</a>
+                    <a href="#" class="action-link">🔐 Конфиденциальность</a>
+                    <a href="#" class="action-link">📱 Мобильное приложение</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

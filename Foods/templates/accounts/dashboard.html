@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная - Auth System{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Добро пожаловать, {{ user.username }}!</h1>
+        <p>Рады видеть вас в нашей системе</p>
+    </div>
+
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-icon">👤</div>
+            <div class="stat-info">
+                <h3>Профиль</h3>
+                <p>Управление вашими данными</p>
+            </div>
+            <a href="{% url 'profile' %}" class="stat-link">Перейти →</a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⚙️</div>
+            <div class="stat-info">
+                <h3>Настройки</h3>
+                <p>Настройте систему под себя</p>
+            </div>
+            <a href="#" class="stat-link">Перейти →</a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-info">
+                <h3>Статистика</h3>
+                <p>Просмотр вашей активности</p>
+            </div>
+            <a href="#" class="stat-link">Перейти →</a>
+        </div>
+    </div>
+
+    <div class="recent-activity">
+        <h2>Последняя активность</h2>
+        <div class="activity-list">
+            <div class="activity-item">
+                <div class="activity-icon">✅</div>
+                <div class="activity-content">
+                    <p>Вы успешно вошли в систему</p>
+                    <span class="activity-time">Только что</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon">🔐</div>
+                <div class="activity-content">
+                    <p>Безопасное соединение установлено</p>
+                    <span class="activity-time">Сегодня</span>
+                </div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon">📧</div>
+                <div class="activity-content">
+                    <p>Email подтвержден</p>
+                    <span class="activity-time">{{ user.date_joined|date:"d.m.Y" }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -2,14 +2,39 @@
 {% block content %}
 <div class="food-card">
     <!-- Слайдер изображений -->
-    <div class="food-gallery">
-        {% for img in food.image_set.all %}
-            <div class="gallery-item">
-                <img class="food-image" src="{{ img.image.url }}" alt="{{ img.name }}">
-            </div>
-        {% endfor %}
+    <div class="food-gallery-slider">
+        <div class="slider-container">
+            {% for img in food.image_set.all %}
+                <div class="slide {% if forloop.first %}active{% endif %}">
+                    <div class="image-wrapper">
+                        <img class="food-image" src="{{ img.image.url }}" alt="{{ img.name }}">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Навигационные стрелки -->
+        {% if food.image_set.all.count > 1 %}
+        <button class="slider-btn prev-btn" onclick="changeSlide(-1)">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        <button class="slider-btn next-btn" onclick="changeSlide(1)">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+        
+        <!-- Индикаторы -->
+        <div class="slider-indicators">
+            {% for img in food.image_set.all %}
+                <button class="indicator {% if forloop.first %}active{% endif %}" onclick="goToSlide({{ forloop.counter0 }})"></button>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
-    
+
     <!-- Контент блюда -->
     <div class="food-content">
         <h2 class="food-name">{{ food.name }}</h2>
@@ -19,4 +44,103 @@
         </div>
     </div>
 </div>
-{% endblock  %}
+
+<style>
+
+</style>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const indicators = document.querySelectorAll('.indicator');
+const totalSlides = slides.length;
+
+function showSlide(index) {
+    // Скрываем все слайды
+    slides.forEach(slide => slide.classList.remove('active'));
+    indicators.forEach(indicator => indicator.classList.remove('active'));
+    
+    // Корректируем индекс для циклической навигации
+    if (index >= totalSlides) {
+        currentSlide = 0;
+    } else if (index < 0) {
+        currentSlide = totalSlides - 1;
+    } else {
+        currentSlide = index;
+    }
+    
+    // Показываем текущий слайд
+    slides[currentSlide].classList.add('active');
+    indicators[currentSlide].classList.add('active');
+}
+
+function changeSlide(direction) {
+    showSlide(currentSlide + direction);
+}
+
+function goToSlide(index) {
+    showSlide(index);
+}
+
+// Обработчики клавиатуры для удобства
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+    } else if (e.key === 'ArrowRight') {
+        changeSlide(1);
+    }
+});
+
+// Свайпы для мобильных устройств
+let startX = 0;
+let endX = 0;
+
+const slider = document.querySelector('.food-gallery-slider');
+
+slider.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+});
+
+slider.addEventListener('touchend', (e) => {
+    endX = e.changedTouches[0].clientX;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    const diff = startX - endX;
+    const swipeThreshold = 50;
+
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            // Свайп влево - следующий слайд
+            changeSlide(1);
+        } else {
+            // Свайп вправо - предыдущий слайд
+            changeSlide(-1);
+        }
+    }
+}
+
+// Автопрокрутка (раскомментируйте для включения)
+/*
+let slideInterval = setInterval(() => {
+    changeSlide(1);
+}, 6000);
+
+// Остановка автопрокрутки при взаимодействии
+slider.addEventListener('mouseenter', () => {
+    clearInterval(slideInterval);
+});
+
+slider.addEventListener('mouseleave', () => {
+    slideInterval = setInterval(() => {
+        changeSlide(1);
+    }, 6000);
+});
+
+slider.addEventListener('touchstart', () => {
+    clearInterval(slideInterval);
+});
+*/
+</script>
+{% endblock %}
