@@ -1,41 +1,620 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<section class="container mx-auto px-4 py-8">
-    <!-- Сортировка -->
-    
-
-    <!-- Карточки еды -->
-    <div class="foods-grid">
-        {% for i in foods %}
-        <div class="food-card group">
-            <!-- Изображения -->
-            <div class="food-card__gallery">
-                {% for img in i.image_set.all %}
-                <div class="food-card__image-wrapper">
-                    <img class="food-card__image" src="{{ img.image.url }}" alt="{{ img.name }}">
-                </div>
-                {% endfor %}
-            </div>
-
-            <!-- Контент -->
-            <div class="food-card__content">
-                <h3 class="food-card__name">{{ i.name }}</h3>
-                <p class="food-card__description">{{ i.description }}</p>
-                <div class="food-card__footer">
-                    <span class="food-card__price">{{ i.price }} ₽</span>
-                    <a href="{% url 'update' i.id %}" class="food-card__btn">
-                        Подробнее
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div class="home-page">
+    <!-- Герой секция -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Добро пожаловать в наш ресторан</h1>
+                <p class="hero-subtitle">Свежие ингредиенты, неповторимый вкус и быстрая доставка</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'catalog' %}" class="btn btn-primary">
+                        Посмотреть меню
+                        <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
+                    <a href="{% url 'about' %}" class="btn btn-secondary">
+                        О нас
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="{% static 'images/hero-food.png' %}" alt="Вкусная еда" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Почему выбирают нас</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Быстрая доставка</h3>
+                    <p>Доставляем заказы в течение 45 минут по всему городу</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Свежие продукты</h3>
+                    <p>Используем только свежие и качественные ингредиенты</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍🍳</div>
+                    <h3>Профессиональные повара</h3>
+                    <p>Наши шеф-повара с многолетним опытом работы</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💚</div>
+                    <h3>Эко-упаковка</h3>
+                    <p>Заботимся о природе с биоразлагаемой упаковкой</p>
                 </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
-</section>
+    </section>
 
+    <!-- Популярные товары -->
+    <section class="popular-section">
+        <div class="container">
+            <h2 class="section-title">Популярные блюда</h2>
+            <div class="foods-grid">
+                {% for i in popular_foods %}
+                <div class="food-card group">
+                    <!-- Изображения -->
+                    <div class="food-card__gallery">
+                        {% for img in i.image_set.all %}
+                            {% if forloop.first %}
+                            <div class="food-card__image-wrapper">
+                                <div class="image-container">
+                                    <img class="food-card__image" src="{{ img.image.url }}" alt="{{ img.name }}" onerror="this.style.display='none'">
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% empty %}
+                            <div class="food-card__image-wrapper">
+                                <div class="image-container">
+                                    <div class="no-image-placeholder">
+                                        <span>Нет изображения</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
 
+                    <!-- Контент -->
+                    <div class="food-card__content">
+                        <h3 class="food-card__name">{{ i.name }}</h3>
+                        <p class="food-card__description">{{ i.description|truncatewords:15 }}</p>
+                        <div class="food-card__footer">
+                            <span class="food-card__price">{{ i.price }} ₽</span>
+                            <a href="{% url 'update' i.id %}" class="food-card__btn">
+                                Подробнее
+                                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-8">
+                <a href="{% url 'catalog' %}" class="btn btn-outline">
+                    Весь каталог
+                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA секция -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Готовы заказать?</h2>
+                <p>Сделайте заказ прямо сейчас и получите скидку 10% на первый заказ!</p>
+                <a href="{% url 'catalog' %}" class="btn btn-white">
+                    Сделать заказ
+                    <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+/* Общие стили */
+.home-page {
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-8 {
+    margin-top: 2rem;
+}
+
+/* Герой секция */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.hero-image {
+    text-align: center;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Кнопки */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border-color: white;
+}
+
+.btn-secondary:hover {
+    background: white;
+    color: #667eea;
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: #dc2626;
+    border-color: #dc2626;
+}
+
+.btn-outline:hover {
+    background: #dc2626;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-white {
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+}
+
+.btn-white:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+.btn-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* Секции */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #1f2937;
+}
+
+.features-section {
+    padding: 80px 0;
+    background: #f8fafc;
+}
+
+.popular-section {
+    padding: 80px 0;
+}
+
+.cta-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+    text-align: center;
+}
+
+/* Преимущества */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1f2937;
+}
+
+.feature-card p {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+/* CTA секция */
+.cta-content h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cta-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+/* Сетка карточек еды */
+.foods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+    align-items: stretch;
+}
+
+/* Карточка товара */
+.food-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 400px;
+}
+
+.food-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Галерея изображений */
+.food-card__gallery {
+    position: relative;
+    background: #f8f9fa;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.food-card__image-wrapper {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.image-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.food-card__image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.food-card:hover .food-card__image {
+    transform: scale(1.05);
+}
+
+/* Заглушка для отсутствующих изображений */
+.no-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    border-radius: 8px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Контент карточки */
+.food-card__content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+/* Название товара по центру */
+.food-card__name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.8em;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+.food-card__description {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+    min-height: 4.5em;
+    text-align: center;
+}
+
+/* Футер карточки */
+.food-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.food-card__price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #059669;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Кнопка "Подробнее" */
+.food-card__btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #dc2626;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: auto;
+    width: auto;
+}
+
+.food-card__btn:hover {
+    background: #b91c1c;
+    transform: translateX(2px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .hero-section .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .foods-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    
+    .food-card {
+        min-height: 380px;
+    }
+    
+    .food-card__image-wrapper {
+        height: 200px;
+    }
+    
+    .food-card__name {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 60px 0;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .features-section,
+    .popular-section,
+    .cta-section {
+        padding: 60px 0;
+    }
+    
+    .foods-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+    }
+}
+</style>
+
+<script>
+// Обработка ошибок загрузки изображений
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.food-card__image, .hero-image img');
+    
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            if (this.closest('.food-card__gallery')) {
+                this.style.display = 'none';
+                const wrapper = this.closest('.image-container');
+                if (wrapper) {
+                    wrapper.innerHTML = `
+                        <div class="no-image-placeholder">
+                            <span>Изображение не загружено</span>
+                        </div>
+                    `;
+                }
+            } else {
+                this.style.display = 'none';
+            }
+        });
+    });
+
+    // Плавная прокрутка для якорей
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
